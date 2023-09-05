@@ -151,7 +151,7 @@ function webp() {
 
 
 function watching(){
-  watch(['app/scss/**/*.scss'], styles);
+  watch(['app/scss/**/*.scss', 'app/components/**/*.scss', 'app/components/**/**/*.scss'], styles);
   watch(['app/components/**/*.html', 'app/pages/*.html'], htmlInclude);
   watch(['app/js/**/*.js', '!app/js/scripts.min.js'], scripts);
   watch(['app/images/*.+(png|jpg|jpeg)', 'app/images/**/*.+(png|jpg|jpeg)'], webp);

@@ -15,6 +15,7 @@ const webpConv     = require('gulp-webp');
 const changed      = require('gulp-changed');
 const multiDest    = require('gulp-multi-dest');
 const plumber      = require('gulp-plumber');
+const include      = require('gulp-include');
 
 
 function browsersyns(){
@@ -117,6 +118,14 @@ function styles(){
 }
 
 
+function htmlInclude() {
+	return src('app/pages/*.html')
+	.pipe(include())
+	.pipe(dest('app'))
+	.pipe(browserSync.stream())
+}
+
+
 function svgSprite() {
 	return src('app/images/svg/*.svg')
 	.pipe(sprite({
@@ -143,6 +152,7 @@ function webp() {
 
 function watching(){
   watch(['app/scss/**/*.scss'], styles);
+  watch(['app/components/**/*.html', 'app/pages/*.html'], htmlInclude);
   watch(['app/js/**/*.js', '!app/js/scripts.min.js'], scripts);
   watch(['app/images/*.+(png|jpg|jpeg)', 'app/images/**/*.+(png|jpg|jpeg)'], webp);
   watch(['app/images/svg/*.svg'], svgSprite);
@@ -157,9 +167,10 @@ exports.video       = video;
 exports.scripts     = scripts;
 exports.styleLibs   = styleLibs;
 exports.styles      = styles;
+exports.htmlInclude = htmlInclude;
 exports.svgSprite   = svgSprite;
 exports.webp        = webp;
 exports.watching    = watching;
 
 exports.build       = series(cleanDist, images, video, build);
-exports.default     = parallel(styles, styleLibs, scripts, svgSprite, webp, browsersyns, watching);
+exports.default     = parallel(styles, styleLibs, scripts, svgSprite, webp, htmlInclude, browsersyns, watching);
